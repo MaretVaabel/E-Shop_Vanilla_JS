@@ -2,9 +2,17 @@ const API_URL = "https://fakestoreapi.com";
 
 export const fetchProducts = async (param) => {
   try {
-    // const category = param !== "all" && `/category/${param}`;
     const response = await fetch(`${API_URL}/products`);
-    return await response.json();
+    return response.json();
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+};
+
+export const fetchProductsByCategory = async (param) => {
+  try {
+    const response = await fetch(`${API_URL}/products/category/${param}`);
+    return response.json();
   } catch (error) {
     console.error("Error: ", error);
   }
@@ -14,7 +22,7 @@ export const fetchProducts = async (param) => {
 export const fetchProductById = async (id) => {
   try {
     const response = await fetch(`${API_URL}/products/${id}`);
-    return await response.json();
+    return response.json();
   } catch (error) {
     console.error("Error: ", error);
   }
@@ -23,7 +31,7 @@ export const fetchProductById = async (id) => {
 export const fetchCategories = async () => {
   try {
     const response = await fetch(`${API_URL}/products/categories`);
-    return await response.json();
+    return response.json();
   } catch (error) {
     console.error("Error: ", error);
   }
