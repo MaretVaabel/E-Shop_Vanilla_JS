@@ -1,22 +1,19 @@
 import { fetchProductById } from "./api.js";
 import { addToCart } from "./cart.js";
 
-// export const loadProductView = async (productId) => {
-//   const product = await fetchProductById(productId);
-//   const productDetail = document.getElementById("product-list");
-//   productDetail.innerHTML = `
-//         <h2>${product.title}</h2>
-//         <img src="${product.image}" alt="${product.title}">
-//         <p>${product.description}</p>
-//         <p>${product.price}€</p>
-//         <button id="add-to-cart">Lisa ostukorvi</button>
-//     `;
-
-//   document.getElementById("add-to-cart").onclick = () => addToCart(product);
-// };
+import inventoryInstance from "./inventory.js";
+import { Product } from "./product.js";
 
 export const loadProductView = async (productId) => {
-  const product = await fetchProductById(productId);
+  const productData = await fetchProductById(productId);
+
+  const product = new Product(
+    productData.id,
+    productData.title,
+    productData.price,
+    productData.description,
+    productData.image
+  );
   const productList = document.getElementById("product-list");
   productList.innerHTML = ""; // Tühjenda vaateala
 
@@ -27,15 +24,17 @@ export const loadProductView = async (productId) => {
         <h2>${product.title}</h2>
         <p>${product.description}</p>
         <p>Hind: ${product.price}€</p>
+         <p>Laos: ${inventoryInstance.getStock(product.id)} ühikut</p>
         <button id="add-to-cart-${product.id}">Lisa ostukorvi</button>
         <button id="back-to-category">Tagasi kategooriasse</button>
     `;
-
-  productList.appendChild(productDetailElement);
+  -productList.appendChild(productDetailElement);
 
   // Lisa sündmus "Lisa ostukorvi" nupule
-  document.getElementById(`add-to-cart-${product.id}`).onclick = () =>
+  document.getElementById(`add-to-cart-${product.id}`).onclick = () => {
     addToCart(product);
+    loadProductView(product.id);
+  };
 
   // Lisa "Back" nupp, mis viib tagasi kategooria vaatesse
   document.getElementById("back-to-category").onclick = () =>

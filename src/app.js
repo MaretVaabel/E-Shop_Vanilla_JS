@@ -1,6 +1,28 @@
-import { fetchCategories } from "./api.js";
+import { fetchCategories, fetchProducts } from "./api.js";
 import { loadCategoryView } from "./categoryView.js";
 import { navigate } from "./router.js";
+import inventoryInstance from "./inventory.js";
+import { Product } from "./product.js";
+
+// Lae kõik tooted ja määra neile laoseis
+async function initializeInventory() {
+  const products = await fetchProducts();
+  products.forEach((productData) => {
+    const product = new Product(
+      productData.id,
+      productData.title,
+      productData.price,
+      productData.description,
+      productData.image
+    );
+
+    const randomStock = Math.floor(Math.random() * (20 - 5) + 5);
+    // Näiteks määrame igale tootele laokoguseks 10 ühikut
+    inventoryInstance.addProduct(product, randomStock);
+  });
+}
+
+initializeInventory();
 
 const initApp = async () => {
   console.log("siin");

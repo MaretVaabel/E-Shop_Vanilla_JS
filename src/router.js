@@ -5,7 +5,7 @@ import { loadCartView } from "./cartView.js";
 export const navigate = (view, param) => {
   const views = {
     category: () => loadCategoryView(param || "all"), // Kasuta vaikeväärtust "all" kategooriana
-    product: () => loadProductView(param),
+    product: () => loadProductView(param), // üks toode
     cart: () => loadCartView(), // Kuvab ostukorvi vaate
   };
 
