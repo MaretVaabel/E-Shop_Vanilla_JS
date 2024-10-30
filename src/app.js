@@ -33,7 +33,7 @@ const initApp = async () => {
   categories.forEach((category) => {
     const categoryElement = document.createElement("li");
     categoryElement.textContent = category;
-    categoryElement.onclick = () => loadCategoryView(category);
+    categoryElement.onclick = () => navigate("category", category);
     categoryMenu.appendChild(categoryElement);
   });
 
