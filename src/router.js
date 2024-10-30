@@ -14,7 +14,9 @@ export const navigate = (view, param) => {
     views[view]();
 
     // Muuda URL-i ilma lehte uuesti laadimata
-    const newUrl = view === "category" ? "/" : `/${view}/${param || ""}`;
+    const encodedParam = encodeURIComponent(param);
+    const newUrl =
+      view === "category" && !param ? "/" : `/${view}/${encodedParam || ""}`;
     window.history.pushState({}, "", newUrl);
   }
 };
@@ -23,5 +25,6 @@ export const navigate = (view, param) => {
 window.addEventListener("popstate", () => {
   const path = window.location.pathname;
   const [_, view, param] = path.split("/");
-  navigate(view || "category", param);
+  const decodedParam = decodeURIComponent(param);
+  navigate(view || "category", decodedParam);
 });
